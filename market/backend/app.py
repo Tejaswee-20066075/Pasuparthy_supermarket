@@ -33,6 +33,39 @@ def create_table():
 
 # ---------------- CRUD API Routes ----------------
 
+# Get All Products
+@app.route("/products", methods=["GET"])
+def get_products():
+    with connect_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM products")
+        products = [dict(row) for row in cursor.fetchall()]
+    return jsonify(products)
+
+# Get a Single Product by ID
+@app.route("/products/<int:product_id>", methods=["GET"])
+def get_product(product_id):
+    with connect_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM products WHERE id = ?", (product_id,))
+        product = cursor.fetchone()
+    return jsonify(dict(product)) if product else jsonify({"error": "Product not found"}), 404
+
+# Add a New Product
+@app.route("/products", methods=["POST"])
+def add_product():
+    data = request.json
+    with connect_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO products (name, category, quantity, price, expiry_date, supplier) 
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (data["name"], data["category"], data["quantity"], data["price"], data.get("expiry_date"), data["supplier"]))
+        conn.commit()
+        new_id = cursor.lastrowid
+    return jsonify({"message": "Product added", "id": new_id}), 201
+
+
 
 # Run the Flask App
 if __name__ == "__main__":
