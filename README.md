@@ -49,3 +49,11 @@ This will start the API at `http://127.0.0.1:5000`
 5. **Open the frontend in a browser:**
 Simply open `frontend/index.html` in your browser.
 
+## API Endpoints
+| Method | Endpoint | Description |
+|--------|---------|-------------|
+| GET | `/products` | Retrieve all products |
+| GET | `/products/{id}` | Retrieve a specific product |
+| POST | `/products` | Add a new product |
+| PUT | `/products/{id}` | Update a product |
+| DELETE | `/products/{id}` | Delete a product |
