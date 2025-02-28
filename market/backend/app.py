@@ -65,6 +65,28 @@ def add_product():
         new_id = cursor.lastrowid
     return jsonify({"message": "Product added", "id": new_id}), 201
 
+# Update an Existing Product
+@app.route("/products/<int:product_id>", methods=["PUT"])
+def update_product(product_id):
+    data = request.json
+    with connect_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute('''
+            UPDATE products 
+            SET name=?, category=?, quantity=?, price=?, expiry_date=?, supplier=? 
+            WHERE id=?
+        ''', (data["name"], data["category"], data["quantity"], data["price"], data.get("expiry_date"), data["supplier"], product_id))
+        conn.commit()
+    return jsonify({"message": "Product updated"})
+
+# Delete a Product
+@app.route("/products/<int:product_id>", methods=["DELETE"])
+def delete_product(product_id):
+    with connect_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM products WHERE id = ?", (product_id,))
+        conn.commit()
+    return jsonify({"message": "Product deleted"})
 
 
 # Run the Flask App
