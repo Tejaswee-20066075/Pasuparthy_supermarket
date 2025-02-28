@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Product</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Supermarket Inventory Management</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="add.html">Add Product</a></li>
+                <li><a href="edit.html">Edit Product</a></li>
+                <li><a href="delete.html">Delete Product</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+    <h1>Delete Product</h1>
+    <p>Enter the Product ID to delete:</p>
+    <input type="number" id="deleteId" placeholder="Product ID" required>
+    <button onclick="deleteProduct()">Delete Product</button>
+    <a href="index.html">Back to Dashboard</a>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
