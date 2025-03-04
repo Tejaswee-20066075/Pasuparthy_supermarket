@@ -109,3 +109,69 @@ button:hover {
     color: #d9578b;
 }
 
+/* Footer */
+footer {
+    background: #222;
+    padding: 10px;
+    color: #ccc;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 20px;
+    box-shadow: 0px -2px 6px rgba(0, 0, 0, 0.3);
+}
+/* Table Styling */
+.table-container {
+    margin: 30px auto;
+    width: 90%;
+    max-width: 1000px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    color: #333;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Table Header */
+th {
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    color: #fff;
+    font-size: 1.1rem;
+    padding: 12px;
+    border: none;
+}
+
+/* Table Cells */
+td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+/* Zebra Stripes for Better Readability */
+tr:nth-child(even) {
+    background: #f9f9f9;
+}
+tr:nth-child(odd) {
+    background: #f0f0f0;
+}
+
+/* Table Hover Effect */
+tr:hover {
+    background: #ffd1dc;
+    transform: scale(1.02);
+    transition: all 0.2s ease-in-out;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
