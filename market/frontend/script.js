@@ -55,3 +55,24 @@ function addProduct(event) {
 
 document.getElementById("productForm")?.addEventListener("submit", addProduct);
 
+function editProduct(event) {
+    event.preventDefault();
+    const productId = document.getElementById("editId").value;
+    const updatedProduct = {
+        name: document.getElementById("editName").value,
+        category: document.getElementById("editCategory").value,
+        quantity: document.getElementById("editQuantity").value,
+        price: document.getElementById("editPrice").value,
+        expiry_date: document.getElementById("editExpiry").value,
+        supplier: document.getElementById("editSupplier").value
+    };
+    fetch(`http://127.0.0.1:5000/products/${productId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedProduct)
+    }).then(response => response.json()).then(() => {
+        window.location.href = "index.html";
+    });
+}
+
+document.getElementById("editForm")?.addEventListener("submit", editProduct);
