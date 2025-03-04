@@ -175,3 +175,29 @@ tr:hover {
     gap: 10px;
 }
 
+.edit-btn, .delete-btn {
+    border: none;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.edit-btn {
+    background: #28a745;
+    color: white;
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.edit-btn:hover {
+    background: #218838;
+}
+
+.delete-btn:hover {
+    background: #c82333;
+}
