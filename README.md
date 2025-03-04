@@ -3,6 +3,7 @@
 ## Overview
 This project is a simple web-based inventory management system for a supermarket. It allows administrators to add, edit, view, and delete products using a Flask backend with an SQLite database and a JavaScript-powered frontend.
 
+
 ## Features
 - View all products in inventory
 - Add new products
