@@ -17,6 +17,7 @@ This project is a simple web-based inventory management system for a supermarket
 - **API Communication:** Fetch API
 
 ## Installation and Setup
+
 ### Prerequisites
 Make sure you have Python installed on your system. You can check by running:
 ```bash
