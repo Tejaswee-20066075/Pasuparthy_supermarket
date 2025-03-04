@@ -88,8 +88,8 @@ def delete_product(product_id):
         conn.commit()
     return jsonify({"message": "Product deleted"})
 
-
 # Run the Flask App
 if __name__ == "__main__":
     create_table()  # Ensure table exists before running
     app.run(debug=True)
+
