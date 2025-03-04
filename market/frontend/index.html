@@ -3,27 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory Dashboard</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Inventory Dashboard - Supermarket Management</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Inventory Management</h1>
-    <a href="add.html">Add Product</a>
-    <table id="inventoryTable">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Expiry Date</th>
-                <th>Supplier</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Supermarket Inventory Management</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">Dashboard</a></li>
+                <li><a href="add.html">Add Product</a></li>
+                <li><a href="edit.html">Edit Product</a></li>
+                <li><a href="delete.html">Delete Product</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <h2>Inventory Dashboard</h2>
+        <div class="table-container">
+            <table id="inventoryTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Quantity</th>
+                        <th>Price ($)</th>
+                        <th>Expiry Date</th>
+                        <th>Supplier</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dynamic content will be added here -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 Supermarket Inventory Management | All Rights Reserved</p>
+    </footer>
+
     <script src="script.js"></script>
+
 </body>
 </html>

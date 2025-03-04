@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete Product</title>
+    <title>Delete Product - Inventory Management</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <!-- Header Section -->
     <header>
         <h1>Supermarket Inventory Management</h1>
         <nav>
@@ -14,17 +16,28 @@
                 <li><a href="index.html">Dashboard</a></li>
                 <li><a href="add.html">Add Product</a></li>
                 <li><a href="edit.html">Edit Product</a></li>
-                <li><a href="delete.html">Delete Product</a></li>
+                <li><a href="delete.html" class="active">Delete Product</a></li>
             </ul>
         </nav>
     </header>
+
+    <!-- Main Content -->
     <main>
-    <h1>Delete Product</h1>
-    <p>Enter the Product ID to delete:</p>
-    <input type="number" id="deleteId" placeholder="Product ID" required>
-    <button onclick="deleteProduct()">Delete Product</button>
-    <a href="index.html">Back to Dashboard</a>
+        <div class="form-container">
+            <h2>Delete Product</h2>
+            <p>Enter the Product ID to delete:</p>
+            <input type="number" id="deleteId" placeholder="Product ID" required>
+            <button onclick="deleteProduct()">🗑️ Delete Product</button>
+            <a href="index.html" class="back-link">⬅ Back to Dashboard</a>
+        </div>
     </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 Supermarket Inventory Management | All Rights Reserved</p>
+    </footer>
+
     <script src="script.js"></script>
+
 </body>
 </html>
