@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Product - Inventory Management</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
 
@@ -13,10 +13,9 @@
         <h1>Supermarket Inventory Management</h1>
         <nav>
             <ul>
-                <li><a href="index.html">Dashboard</a></li>
-                <li><a href="add.html">Add Product</a></li>
-                <li><a href="edit.html" class="active">Edit Product</a></li>
-                <li><a href="delete.html">Delete Product</a></li>
+                <li><a href="{{ url_for('index') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('add_page') }}">Add Product</a></li>
+                <li><a href="{{ url_for('delete_page') }}">Delete Product</a></li>
             </ul>
         </nav>
     </header>
@@ -26,7 +25,7 @@
         <div class="form-container">
             <h2>Edit Product</h2>
             <form id="editForm">
-                <input type="hidden" id="editId">
+                <input type="hidden" id="editId" value="{{ product_id }}">
                 <input type="text" id="editName" placeholder="Product Name" required>
                 <input type="text" id="editCategory" placeholder="Category" required>
                 <input type="number" id="editQuantity" placeholder="Quantity" required>
@@ -35,7 +34,7 @@
                 <input type="text" id="editSupplier" placeholder="Supplier" required>
                 <button type="submit">✏️ Update Product</button>
             </form>
-            <a href="index.html" class="back-link">⬅ Back to Dashboard</a>
+            <a href="{{ url_for('index') }}" class="back-link">⬅ Back to Dashboard</a>
         </div>
     </main>
 
@@ -44,7 +43,63 @@
         <p>&copy; 2024 Supermarket Inventory Management | All Rights Reserved</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            const productId = document.getElementById("editId").value;
+
+            if (productId) {
+                try {
+                    const response = await fetch(`/products/${productId}`);
+                    if (response.ok) {
+                        const product = await response.json();
+
+                        document.getElementById("editName").value = product.name;
+                        document.getElementById("editCategory").value = product.category;
+                        document.getElementById("editQuantity").value = product.quantity;
+                        document.getElementById("editPrice").value = product.price;
+                        document.getElementById("editExpiry").value = product.expiry_date || "";
+                        document.getElementById("editSupplier").value = product.supplier;
+                    } else {
+                        alert("Product not found.");
+                        window.location.href = "{{ url_for('index') }}";
+                    }
+                } catch (error) {
+                    console.error("Error loading product data:", error);
+                }
+            }
+
+            document.getElementById("editForm").addEventListener("submit", async function (event) {
+                event.preventDefault();
+
+                const updatedProduct = {
+                    name: document.getElementById("editName").value,
+                    category: document.getElementById("editCategory").value,
+                    quantity: parseInt(document.getElementById("editQuantity").value),
+                    price: parseFloat(document.getElementById("editPrice").value),
+                    expiry_date: document.getElementById("editExpiry").value || null,
+                    supplier: document.getElementById("editSupplier").value
+                };
+
+                try {
+                    const response = await fetch(`/products/${productId}`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(updatedProduct)
+                    });
+
+                    if (response.ok) {
+                        alert("Product updated successfully!");
+                        window.location.href = "{{ url_for('index') }}";
+                    } else {
+                        alert("Failed to update product.");
+                    }
+                } catch (error) {
+                    console.error("Error updating product:", error);
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
