@@ -139,3 +139,13 @@ def delete_product(product_id):
     except Exception as e:
         return jsonify({"error": "Failed to delete product", "details": str(e)}), 500
 
+# ---------------- Health Check Route ----------------
+@app.route("/health", methods=["GET"])
+def health_check():
+    """ Simple health check route to confirm API is running. """
+    return jsonify({"status": "OK", "message": "API is running"}), 200
+
+# ---------------- Run the Flask App ----------------
+if __name__ == "__main__":
+    create_table()  # Ensure table exists before running
+    app.run(debug=True)
