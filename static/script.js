@@ -123,3 +123,35 @@ if (editForm) {
     editForm.addEventListener("submit", editProduct);
 }
 
+/** ✅ Auto-Fill Edit Form (Only on Edit Page) */
+async function loadProductForEditing() {
+    const editIdField = document.getElementById("editId");
+    if (!editIdField) return; // Only run if on Edit page
+
+    const productId = editIdField.value;
+    if (!productId) {
+        alert("Invalid Product ID.");
+        window.location.href = "/";
+        return;
+    }
+
+    try {
+        const response = await fetch(`/products/${productId}`);
+        if (!response.ok) throw new Error("Product not found");
+
+        const product = await response.json();
+        document.getElementById("editName").value = product.name;
+        document.getElementById("editCategory").value = product.category;
+        document.getElementById("editQuantity").value = product.quantity;
+        document.getElementById("editPrice").value = product.price;
+        document.getElementById("editExpiry").value = product.expiry_date || "";
+        document.getElementById("editSupplier").value = product.supplier;
+    } catch (error) {
+        console.error("Error loading product for editing:", error);
+        alert("Product not found.");
+        window.location.href = "/";
+    }
+}
+
+// ✅ Auto-fill edit form when on Edit page
+document.addEventListener("DOMContentLoaded", loadProductForEditing);
