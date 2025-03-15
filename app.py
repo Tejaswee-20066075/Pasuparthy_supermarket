@@ -149,3 +149,5 @@ def health_check():
 if __name__ == "__main__":
     create_table()  # Ensure table exists before running
     app.run(debug=True)
+
+
