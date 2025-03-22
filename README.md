@@ -49,7 +49,7 @@ python app.py
 This will start the API at `http://127.0.0.1:5000`
 
 5. **Open the frontend in a browser:**
-Simply open `frontend/index.html` in your browser.
+Simply open `index.html` in your browser.
 
 ## API Endpoints
 | Method | Endpoint | Description |
