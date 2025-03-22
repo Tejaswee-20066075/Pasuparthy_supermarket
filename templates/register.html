@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Registration - Stock Management System</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/login">Login</a></li>
+        </ul>
+    </nav>
+    <style>
+    .container {
+        max-width: 500px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+        margin: auto;
+        margin-top: 50px;
+        color: #333;
+    }
+
+    /* Navigation */
+    nav ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        background: #333;
+        padding: 15px;
+    }
+
+    nav ul li {
+        display: inline;
+    }
+
+    nav ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1rem;
+        padding: 10px 15px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    nav ul li a:hover {
+        background: #fff;
+        color: #007bff;
+        border-radius: 8px;
+    }
+
+    /* Form Styling */
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    label {
+        font-weight: bold;
+        text-align: left;
+    }
+
+    input {
+        padding: 12px;
+        border: 2px solid #ff7eb3;
+        border-radius: 8px;
+        font-size: 1rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    button {
+        background: #ff7eb3;
+        color: white;
+        font-size: 1rem;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+
+    button:hover {
+        background: #d9578b;
+        transform: scale(1.05);
+    }
+
+    /* Responsive Design */
+    @media screen and (max-width: 600px) {
+        .container {
+            width: 90%;
+            padding: 15px;
+        }
+        nav ul {
+            flex-direction: column;
+            text-align: center;
+        }
+        nav ul li {
+            padding: 5px 0;
+        }
+    }
+</style>
+    
+    <div class="container">
+        <h2>Admin Registration</h2>
+        <form action="/register" method="post" class="form-container">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Choose a username" required>
+            
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Create a password" required>
+            
+            <button type="submit" class="btn">Register</button>
+        </form>
+        <p>Already have an account? <a href="/login">Login here</a></p>
+    </div>
+</body>
+</html>
