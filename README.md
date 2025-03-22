@@ -44,7 +44,7 @@ pip install -r backend/requirements.txt
 
 4. **Run the Flask server:**
 ```bash
-python backend/app.py
+python app.py
 ```
 This will start the API at `http://127.0.0.1:5000`
 
