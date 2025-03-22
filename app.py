@@ -107,7 +107,16 @@ def update_stock(id):
         return redirect(url_for('index'))
     return render_template('update.html', item=item)
 
-
+@app.route('/delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def delete_stock(id):
+    item = Stock.query.get_or_404(id)
+    if request.method == 'POST':
+        db.session.delete(item)
+        db.session.commit()
+        flash("Stock item deleted successfully.", "success")
+        return redirect(url_for('index'))
+    return render_template('delete.html', item=item)
 
 if __name__ == '__main__':
     app.run(debug=True)
