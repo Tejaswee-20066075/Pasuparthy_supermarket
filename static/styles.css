@@ -368,3 +368,6 @@ tr:hover {
     text-decoration: none;
     transition: background 0.3s ease;
 }
+.profile-dropdown .logout-btn:hover {
+    background: #c0392b;
+}
