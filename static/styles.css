@@ -204,3 +204,102 @@ tr:hover {
 h2 {
     color: #6a0dad;
 }
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+input, select {
+    padding: 12px;
+    border: 2px solid #ff7eb3;
+    border-radius: 8px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Table Styling */
+.table-container {
+    margin: 30px auto;
+    width: 90%;
+    max-width: 1100px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    color: #333;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Table Header */
+th {
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    color: #fff;
+    font-size: 1.2rem;
+    padding: 14px;
+    border: none;
+}
+
+/* Table Cells */
+td {
+    padding: 14px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+/* Zebra Stripes */
+tr:nth-child(even) {
+    background: #f9f9f9;
+}
+tr:nth-child(odd) {
+    background: #f0f0f0;
+}
+
+/* Table Hover Effect */
+tr:hover {
+    background: #ffd1dc;
+    transform: scale(1.02);
+    transition: all 0.2s ease-in-out;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eee;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #f8f8f8;
+    padding: 6px 12px;
+    border-radius: 25px;
+    font-size: 14px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.user-emoji {
+    font-size: 20px;
+}
+
+.logout-btn {
+    background-color: #e74c3c;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    text-decoration: none;
+    font-size: 13px;
+    transition: background 0.3s ease;
+}
