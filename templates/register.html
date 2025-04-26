@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Registration - Stock Management System</title>
-    <link rel="stylesheet" href="/static/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Registration - Stock Management System</title>
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/login">Login</a></li>
-        </ul>
-    </nav>
-    <style>
+  <nav>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/login.html">Login</a></li>
+    </ul>
+  </nav>
+
+  <style>
     .container {
         max-width: 500px;
         background: white;
@@ -25,7 +26,6 @@
         color: #333;
     }
 
-    /* Navigation */
     nav ul {
         list-style: none;
         padding: 0;
@@ -54,7 +54,6 @@
         border-radius: 8px;
     }
 
-    /* Form Styling */
     .form-container {
         display: flex;
         flex-direction: column;
@@ -91,7 +90,6 @@
         transform: scale(1.05);
     }
 
-    /* Responsive Design */
     @media screen and (max-width: 600px) {
         .container {
             width: 90%;
@@ -105,20 +103,54 @@
             padding: 5px 0;
         }
     }
-</style>
-    
-    <div class="container">
-        <h2>Admin Registration</h2>
-        <form action="/register" method="post" class="form-container">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="Choose a username" required>
-            
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Create a password" required>
-            
-            <button type="submit" class="btn">Register</button>
-        </form>
-        <p>Already have an account? <a href="/login">Login here</a></p>
-    </div>
+  </style>
+
+  <div class="container">
+    <h2>Admin Registration</h2>
+    <form id="registerForm" class="form-container">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="Choose a username" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Create a password" required>
+
+      <button type="submit" class="btn">Register</button>
+    </form>
+    <p>Already have an account? <a href="/login.html">Login here</a></p>
+
+    <div id="message"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('registerForm');
+    const messageDiv = document.getElementById('message');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        messageDiv.innerText = data.message;
+        messageDiv.style.color = 'green';
+        setTimeout(() => {
+          window.location.href = '/login.html'; // Redirect to login after successful registration
+        }, 1000);
+      } else {
+        messageDiv.innerText = data.error || 'Registration failed.';
+        messageDiv.style.color = 'red';
+      }
+    });
+  </script>
+
 </body>
 </html>

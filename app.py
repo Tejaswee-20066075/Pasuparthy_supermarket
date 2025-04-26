@@ -1,14 +1,15 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask import send_from_directory
 
 # Initialize Flask app
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///stock.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'your_secret_key'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your_secret_key')
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
@@ -32,91 +33,96 @@ class Stock(db.Model):
 with app.app_context():
     db.create_all()
 
-
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-@app.route('/register', methods=['GET', 'POST'])
+# API Routes
+@app.route('/api/register', methods=['POST'])
 def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
-        existing_user = User.query.filter_by(username=username).first()
-        if existing_user:
-            flash("Username already exists. Choose another.", "danger")
-            return redirect(url_for('register'))
-        new_user = User(username=username, password=password)
-        db.session.add(new_user)
-        db.session.commit()
-        flash("Registration successful. You can log in now.", "success")
-        return redirect(url_for('login'))
-    return render_template('register.html')
+    data = request.json
+    username = data.get('username')
+    password = bcrypt.generate_password_hash(data.get('password')).decode('utf-8')
+    existing_user = User.query.filter_by(username=username).first()
+    if existing_user:
+        return jsonify({'error': 'Username already exists.'}), 400
+    new_user = User(username=username, password=password)
+    db.session.add(new_user)
+    db.session.commit()
+    return jsonify({'message': 'Registration successful.'}), 201
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/api/login', methods=['POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        user = User.query.filter_by(username=username).first()
-        if user and bcrypt.check_password_hash(user.password, password):
-            login_user(user)
-            return redirect(url_for('index'))
-        flash("Invalid username or password.", "danger")
-    return render_template('login.html')
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
+    user = User.query.filter_by(username=username).first()
+    if user and bcrypt.check_password_hash(user.password, password):
+        login_user(user)
+        return jsonify({'message': 'Login successful.'})
+    return jsonify({'error': 'Invalid credentials.'}), 401
 
-@app.route('/logout')
+@app.route('/api/logout', methods=['POST'])
 @login_required
 def logout():
     logout_user()
-    flash("You have been logged out.", "info")
-    return redirect(url_for('login'))
+    return jsonify({'message': 'Logged out successfully.'})
 
-@app.route('/')
+@app.route('/api/stock', methods=['GET'])
 @login_required
-def index():
+def get_stock():
     stock_items = Stock.query.all()
-    return render_template('index.html', stock_items=stock_items)
+    result = [
+        {'id': item.id, 'name': item.name, 'quantity': item.quantity, 'price': item.price}
+        for item in stock_items
+    ]
+    return jsonify(result)
 
-@app.route('/add', methods=['POST'])
+@app.route('/api/stock', methods=['POST'])
 @login_required
 def add_stock():
-    name = request.form['name']
-    quantity = request.form['quantity']
-    price = request.form['price']
-    if not name or not quantity or not price:
-        flash("All fields are required!", "danger")
-        return redirect(url_for('index'))
-    new_item = Stock(name=name, quantity=int(quantity), price=float(price))
+    data = request.json
+    name = data.get('name')
+    quantity = data.get('quantity')
+    price = data.get('price')
+    if not name or quantity is None or price is None:
+        return jsonify({'error': 'Missing fields'}), 400
+    new_item = Stock(name=name, quantity=quantity, price=price)
     db.session.add(new_item)
     db.session.commit()
-    flash("Stock item added successfully.", "success")
-    return redirect(url_for('index'))
+    return jsonify({'message': 'Stock item added successfully.'}), 201
 
-@app.route('/update/<int:id>', methods=['GET', 'POST'])
+@app.route('/api/stock/<int:id>', methods=['PUT'])
 @login_required
 def update_stock(id):
     item = Stock.query.get_or_404(id)
-    if request.method == 'POST':
-        item.name = request.form['name']
-        item.quantity = int(request.form['quantity'])
-        item.price = float(request.form['price'])
-        db.session.commit()
-        flash("Stock item updated successfully.", "success")
-        return redirect(url_for('index'))
-    return render_template('update.html', item=item)
+    data = request.json
+    item.name = data.get('name', item.name)
+    item.quantity = data.get('quantity', item.quantity)
+    item.price = data.get('price', item.price)
+    db.session.commit()
+    return jsonify({'message': 'Stock item updated successfully.'})
 
-@app.route('/delete/<int:id>', methods=['GET', 'POST'])
+@app.route('/api/stock/<int:id>', methods=['DELETE'])
 @login_required
 def delete_stock(id):
     item = Stock.query.get_or_404(id)
-    if request.method == 'POST':
-        db.session.delete(item)
-        db.session.commit()
-        flash("Stock item deleted successfully.", "success")
-        return redirect(url_for('index'))
-    return render_template('delete.html', item=item)
+    db.session.delete(item)
+    db.session.commit()
+    return jsonify({'message': 'Stock item deleted successfully.'})
+
+@app.route('/index.html')
+def serve_home():
+    return send_from_directory('templates', 'index.html')
+
+@app.route('/')
+def serve_login():
+    return send_from_directory('templates', 'login.html')
+
+@app.route('/register.html')
+def serve_register():
+    return send_from_directory('templates', 'register.html')
+
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')

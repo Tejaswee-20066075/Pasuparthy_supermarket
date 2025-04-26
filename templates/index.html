@@ -1,113 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supermarket Stock Management</title>
-    <link rel="stylesheet" href="/static/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supermarket Stock Management</title>
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <nav>
-        <div class="nav-container">
-            <h2 class="logo">SuperStock</h2>
-            {% if current_user.is_authenticated %}
-            <div class="profile-container">
-                <div class="profile-icon" onclick="toggleDropdown()">👤</div>
-                <div class="profile-dropdown" id="profileDropdown">
-                    <p>Welcome, <strong>{{ current_user.username }}</strong></p>
-                    <a href="/logout" class="btn logout-btn">Logout</a>
-                </div>
-            </div>
-            {% endif %}
+  <nav>
+    <div class="nav-container">
+      <h2 class="logo">SuperStock</h2>
+      <div class="profile-container" id="profileSection" style="display: none;">
+        <div class="profile-icon" onclick="toggleDropdown()">👤</div>
+        <div class="profile-dropdown" id="profileDropdown">
+          <p>Welcome, <strong id="usernameDisplay"></strong></p>
+          <button class="btn logout-btn" onclick="logout()">Logout</button>
         </div>
-    </nav>
+      </div>
+      <div class="auth-buttons" id="authSection">
+        <a href="/login.html" class="btn login-btn">Login</a>
+        <a href="/register.html" class="btn register-btn">Register</a>
+      </div>
+    </div>
+  </nav>
 
-    <div class="container">
-        <h1>Supermarket Stock Management</h1>
+  <div class="container">
+    <h1>Supermarket Stock Management</h1>
 
-        {% if current_user.is_authenticated %}
-        <form action="/add" method="post" class="form-container">
-            <h2>Add New Product</h2>
+    <div id="mainContent" style="display: none;">
+      <form id="addStockForm" class="form-container">
+        <h2>Add New Product</h2>
 
-            <label for="name">Product Name</label>
-            <select id="name" name="name" required>
-                <option disabled selected>Select a product</option>
-                <option value="Rice">Rice</option>
-                <option value="Wheat Flour">Wheat Flour</option>
-                <option value="Milk">Milk</option>
-                <option value="Bread">Bread</option>
-                <option value="Eggs">Eggs</option>
-                <option value="Sugar">Sugar</option>
-                <option value="Salt">Salt</option>
-                <option value="Cooking Oil">Cooking Oil</option>
-                <option value="Tea Powder">Tea Powder</option>
-                <option value="Coffee Powder">Coffee Powder</option>
-                <option value="Soap">Soap</option>
-                <option value="Shampoo">Shampoo</option>
-                <option value="Toothpaste">Toothpaste</option>
-                <option value="Detergent">Detergent</option>
-                <option value="Biscuits">Biscuits</option>
-                <option value="Soft Drinks">Soft Drinks</option>
-                <option value="Snacks">Snacks</option>
-                <option value="Fruits">Fruits</option>
-                <option value="Vegetables">Vegetables</option>
-            </select>
+        <label for="name">Product Name</label>
+        <select id="name" required>
+          <option disabled selected>Select a product</option>
+          <option value="Rice">Rice</option>
+          <option value="Wheat Flour">Wheat Flour</option>
+          <option value="Milk">Milk</option>
+          <option value="Bread">Bread</option>
+          <option value="Eggs">Eggs</option>
+          <option value="Sugar">Sugar</option>
+          <option value="Salt">Salt</option>
+          <option value="Cooking Oil">Cooking Oil</option>
+          <option value="Tea Powder">Tea Powder</option>
+          <option value="Coffee Powder">Coffee Powder</option>
+          <option value="Soap">Soap</option>
+          <option value="Shampoo">Shampoo</option>
+          <option value="Toothpaste">Toothpaste</option>
+          <option value="Detergent">Detergent</option>
+          <option value="Biscuits">Biscuits</option>
+          <option value="Soft Drinks">Soft Drinks</option>
+          <option value="Snacks">Snacks</option>
+          <option value="Fruits">Fruits</option>
+          <option value="Vegetables">Vegetables</option>
+        </select>
 
-            <label for="quantity">Quantity</label>
-            <input type="number" id="quantity" name="quantity" placeholder="Enter quantity" required>
+        <label for="quantity">Quantity</label>
+        <input type="number" id="quantity" placeholder="Enter quantity" required>
 
-            <label for="price">Price (₹)</label>
-            <input type="number" step="0.01" id="price" name="price" placeholder="Enter price" required>
+        <label for="price">Price (₹)</label>
+        <input type="number" step="0.01" id="price" placeholder="Enter price" required>
 
-            <button type="submit" class="btn add-btn">Add Product</button>
-        </form>
+        <button type="submit" class="btn add-btn">Add Product</button>
+      </form>
 
-        <h2>Current Inventory</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Price (₹)</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in stock_items %}
-                <tr>
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.quantity }}</td>
-                    <td>₹{{ "%.2f"|format(item.price) }}</td>
-                    <td>
-                        <a href="/update/{{ item.id }}" class="btn edit-btn">Edit</a>
-                        <a href="/delete/{{ item.id }}" class="btn delete-btn" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <div class="auth-section">
-            <p><a href="/login" class="btn login-btn">Login</a> or <a href="/register" class="btn register-btn">Register</a> to manage stock.</p>
-        </div>
-        {% endif %}
+      <h2>Current Inventory</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price (₹)</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="stockTableBody"></tbody>
+      </table>
     </div>
 
-    <script>
-        function toggleDropdown() {
-            const dropdown = document.getElementById("profileDropdown");
-            dropdown.classList.toggle("show");
-        }
+    <div id="guestMessage" style="text-align: center; margin-top: 50px;">
+      <p><a href="/login.html" class="btn login-btn">Login</a> or <a href="/register.html" class="btn register-btn">Register</a> to manage stock.</p>
+    </div>
+  </div>
 
-        document.addEventListener("click", function(event) {
-            const dropdown = document.getElementById("profileDropdown");
-            const icon = document.querySelector(".profile-icon");
-            if (!icon.contains(event.target) && !dropdown.contains(event.target)) {
-                dropdown.classList.remove("show");
-            }
+  <script>
+    async function checkLoginStatus() {
+      try {
+        const res = await fetch('/api/stock'); // If user is logged in, this will succeed
+        if (res.ok) {
+          document.getElementById('authSection').style.display = 'none';
+          document.getElementById('profileSection').style.display = 'flex';
+          document.getElementById('mainContent').style.display = 'block';
+          document.getElementById('guestMessage').style.display = 'none';
+          loadStock();
+        } else {
+          document.getElementById('authSection').style.display = 'block';
+          document.getElementById('profileSection').style.display = 'none';
+          document.getElementById('mainContent').style.display = 'none';
+          document.getElementById('guestMessage').style.display = 'block';
+        }
+      } catch (error) {
+        console.error('Error checking login status:', error);
+      }
+    }
+
+    async function loadStock() {
+      const res = await fetch('/api/stock');
+      const data = await res.json();
+      const tbody = document.getElementById('stockTableBody');
+      tbody.innerHTML = '';
+      data.forEach(item => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${item.id}</td>
+            <td>${item.name}</td>
+            <td>${item.quantity}</td>
+            <td>₹${item.price.toFixed(2)}</td>
+            <td>
+              <button class="btn edit-btn" onclick="editStock(${item.id})">Edit</button>
+              <button class="btn delete-btn" onclick="deleteStock(${item.id})">Delete</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    async function addStock(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const quantity = document.getElementById('quantity').value;
+      const price = document.getElementById('price').value;
+
+      await fetch('/api/stock', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, quantity: parseInt(quantity), price: parseFloat(price) })
+      });
+
+      document.getElementById('addStockForm').reset();
+      loadStock();
+    }
+
+    async function deleteStock(id) {
+      if (confirm('Are you sure you want to delete this item?')) {
+        await fetch(`/api/stock/${id}`, { method: 'DELETE' });
+        loadStock();
+      }
+    }
+
+    async function editStock(id) {
+      const newName = prompt('Enter new name:');
+      const newQuantity = prompt('Enter new quantity:');
+      const newPrice = prompt('Enter new price:');
+      if (newName && newQuantity && newPrice) {
+        await fetch(`/api/stock/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: newName, quantity: parseInt(newQuantity), price: parseFloat(newPrice) })
         });
-    </script>
+        loadStock();
+      }
+    }
+
+    async function logout() {
+      await fetch('/api/logout', { method: 'POST' });
+      window.location.reload();
+    }
+
+    function toggleDropdown() {
+      const dropdown = document.getElementById('profileDropdown');
+      dropdown.classList.toggle('show');
+    }
+
+    document.addEventListener("click", function (event) {
+      const dropdown = document.getElementById("profileDropdown");
+      const icon = document.querySelector(".profile-icon");
+      if (!icon.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.classList.remove("show");
+      }
+    });
+
+    document.getElementById('addStockForm').addEventListener('submit', addStock);
+
+    checkLoginStatus();
+  </script>
+
 </body>
 </html>
