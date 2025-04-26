@@ -1,31 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - Stock Management System</title>
-    <link rel="stylesheet" href="/static/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - Stock Management System</title>
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/register">Register</a></li>
-        </ul>
-    </nav>
-    
-    <div class="container">
-        <h2>Admin Login</h2>
-        <form action="/login" method="post" class="form-container">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="Enter your username" required>
-            
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password" required>
-            
-            <button type="submit" class="btn">Login</button>
-        </form>
-        <p>Don't have an account? <a href="/register">Register here</a></p>
-    </div>
+  <nav>
+    <ul>
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/login.html">Login</a></li>
+        <li><a href="/register.html">Register</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h2>Admin Login</h2>
+    <form id="loginForm" class="form-container">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+      <button type="submit" class="btn">Login</button>
+    </form>
+    <p>Don't have an account? <a href="/register.html">Register here</a></p>
+
+    <div id="message"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const messageDiv = document.getElementById('message');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        messageDiv.innerText = data.message;
+        messageDiv.style.color = 'green';
+        setTimeout(() => {
+          window.location.href = '/index.html'; // redirect after login success
+        }, 1000);
+      } else {
+        messageDiv.innerText = data.error || 'Login failed.';
+        messageDiv.style.color = 'red';
+      }
+    });
+  </script>
 </body>
 </html>
