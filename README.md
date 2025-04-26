@@ -50,10 +50,13 @@ This will start the API at `http://127.0.0.1:5000`
 
 
 ## API Endpoints
+
 | Method | Endpoint | Description |
-|--------|---------|-------------|
-| GET | `/products` | Retrieve all products |
-| GET | `/products/{id}` | Retrieve a specific product |
-| POST | `/products` | Add a new product |
-| PUT | `/products/{id}` | Update a product |
-| DELETE | `/products/{id}` | Delete a product |
+|--------|----------|-------------|
+| POST | `/api/register` | Register a new admin account |
+| POST | `/api/login` | Login an admin |
+| POST | `/api/logout` | Logout the current admin |
+| GET | `/api/stock` | Retrieve all stock items |
+| POST | `/api/stock` | Add a new stock item |
+| PUT | `/api/stock/{id}` | Update an existing stock item |
+| DELETE | `/api/stock/{id}` | Delete a stock item |
